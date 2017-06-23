@@ -1,0 +1,8 @@
+export const ADD_ITEM = 'ADD_ITEM'
+export const REMOVE_ITEM = 'REMOVE_ITEM'
+export const CHANGE_ITEM = 'CHANGE_ITEM'
+export const SAVE_DATA = 'SAVE_DATA'
+export const LOAD_DATA = 'LOAD_DATA'
+export const CHANGE_CHANGEABLE_ITEM = 'CHANGE_CHANGEABLE_ITEM'
+export const CHANGE_NEW_ITEM = 'CHANGE_NEW_ITEM'
+export const CHANGE_FILTER = 'CHANGE_FILTER'
