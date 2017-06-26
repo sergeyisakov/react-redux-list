@@ -3,19 +3,17 @@ import PropTypes from 'prop-types';
 
 export default class FilterBlock extends Component {
   static propTypes = {
-    changeData: PropTypes.func.isRequired,
-    label: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    data: PropTypes.object.isRequired
+    changeFilter: PropTypes.func.isRequired,
+    filter: PropTypes.string.isRequired
   }
   onChangeHandler(e) {
     this.props.changeFilter(e.target.value);
   }
   render() {
-    const data = this.props.data;
-    return <div>
+    return <div className='filter'>
       <label>Фильтр: </label>
       <input type='text'
+        onChange={this.onChangeHandler.bind(this)}
         value={this.props.filter}/>
     </div>
   }

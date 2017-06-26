@@ -37,21 +37,25 @@ export default function reducer(state = initialState, action) {
         }
       }
     case ADD_ITEM:
-      return {
-        ...state,
-        items:[
-          ...state.items,
-          {
-            id: state.nextId,
-            name: action.name,
-            phone: action.phone
-          }
-        ],
-        newItem:{
-          name:'',
-          phone:''
-        },
-        nextId: state.nextId+1
+    if (state.newItem.name==='' || state.newItem.phone===''){
+        return state;
+      } else {
+        const newItem = state.newItem;
+        return {
+          ...state,
+          items:[
+            ...state.items,
+            {
+              id: state.nextId,
+              ...newItem
+            }
+          ],
+          newItem:{
+            name:'',
+            phone:''
+          },
+          nextId: state.nextId+1
+        }
       }
     case CHANGE_ITEM:
       return {

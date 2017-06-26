@@ -16,11 +16,9 @@ export function changeFilter(value) {
   }
 }
 
-export function addItem(item) {
+export function addItem() {
   return {
-    type: ADD_ITEM,
-    name:item.name,
-    phone:item.phone
+    type: ADD_ITEM
   }
 }
 

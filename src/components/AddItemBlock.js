@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 
 export default class AddItemBlock extends Component {
   static propTypes = {
-    addItem: PropTypes.func.isRequired
+    addItem: PropTypes.func.isRequired,
+    changeNewItem: PropTypes.func.isRequired,
+    newItem: PropTypes.object.isRequired,
+    saveData: PropTypes.func.isRequired
   }
   onAddItemHandler(e) {
-    this.props.addItem(this.props.newItem);
+    this.props.addItem();
     this.props.saveData();
   }
   onNameChangeHandler(e) {
@@ -16,10 +19,11 @@ export default class AddItemBlock extends Component {
     this.props.changeNewItem({...this.props.newItem, phone:e.target.value});
   }
   render() {
-    return <div>
-      <input onChange = {this.onNameChangeHandler.bind(this)} value={this.props.newItem.name}/>
-      <input onChange = {this.onPhoneChangeHandler.bind(this)} value={this.props.newItem.phone}/>
-      <button onClick={this.onAddItemHandler.bind(this)}>Добавить</button>
+    const newItem = this.props.newItem;
+    return <div className='addItem'>
+      <input onChange = {this.onNameChangeHandler.bind(this)} value={newItem.name}/>
+      <input onChange = {this.onPhoneChangeHandler.bind(this)} value={newItem.phone}/>
+      <button onClick={this.onAddItemHandler.bind(this)}>+</button>
     </div>
   }
 }

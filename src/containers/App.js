@@ -27,9 +27,11 @@ export class App extends Component {
     } = this.props.actions;
     return <div className='app'>
       <FilterBlock
-      changeFilter={ changeFilter }
-      filter={filter}
+        changeFilter={ changeFilter }
+        filter={filter}
       />
+      <label className="item--el">Имя</label>
+      <label className="item--el">Телефон</label>
       <AddItemBlock
         addItem={ addItem }
         changeNewItem={changeNewItem}
@@ -43,6 +45,7 @@ export class App extends Component {
         removeItem={ removeItem }
         changeChangeableItem={ changeChangeableItem }
         saveData = {saveData}
+        filter={filter}
       />
     </div>
   }
