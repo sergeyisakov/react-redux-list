@@ -3,7 +3,6 @@ import {
   CHANGE_ITEM,
   REMOVE_ITEM,
   SAVE_DATA,
-  LOAD_DATA,
   CHANGE_CHANGEABLE_ITEM,
   CHANGE_NEW_ITEM,
   CHANGE_FILTER
@@ -20,8 +19,7 @@ export const initialState = {
   filter:''
 }
 
-export default function reducer(state = initialState, action) {
-
+export default function reducer(state = loadStateFromLocalStorage(), action) {
   switch (action.type) {
     case CHANGE_FILTER:
       return {
@@ -87,14 +85,24 @@ export default function reducer(state = initialState, action) {
       date.setDate(date.getDate() + 30);
       localStorage.setItem('save', JSON.stringify(state));
       return state;
-    case LOAD_DATA:
-      var save = localStorage.getItem('save');
-      if (save==null){
-        return state;
-      }
-      return JSON.parse(save);
     default:
       return state;
+  }
 }
 
+function loadStateFromLocalStorage(){
+  var save = localStorage.getItem('save');
+  if (save==null){
+    return initialState;
+  }
+  const state = JSON.parse(save);
+  return {
+    ...state,
+    сhangeableItem:-1,
+    newItem:{
+      name:'',
+      phone:''
+    },
+    filter:''
+  }
 }

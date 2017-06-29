@@ -7,9 +7,24 @@ import FilterBlock from '../components/FilterBlock'
 import * as Actions from '../actions/Actions'
 
 export class App extends Component {
-  componentDidMount() {
-    const { loadData } = this.props.actions;
-    loadData();
+  componentWillMount(){
+    const { history } = this.props;
+    this.unsubscribeFromHistory = history.listen(this.handleLocationChange);
+    this.handleLocationChange(history.location);
+
+  }
+  componentWillUnmount() {
+    if (this.unsubscribeFromHistory) this.unsubscribeFromHistory();
+  }
+  handleLocationChange = (location) => {
+    let search = this.props.location.search;
+    if (search && search.substring(0, 8)==='?search='){
+      search=search.substring(8);
+      if (search && search!==this.props.data.filter){
+        const {changeFilter} = this.props.actions;
+        changeFilter(search);
+      }
+    }
   }
   render() {
     const items = this.props.data.items;

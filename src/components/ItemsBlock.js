@@ -14,21 +14,14 @@ export default class ItemsBlock extends Component {
   onRemoveItem(id, e) {
     this.props.removeItem(id);
   }
-  onChangeChangeableItem(id, e){
-    console.log('okkkkkkkkkkkkkkkkkkkk');
+  changeChangeableItem(id, e){
     if (isFocusInCurrentTarget(e)) {
-      console.log('okkkkkkkkkkkkkkkkkkkk');
        return;
     }
-    console.log('okkkkkkkkkkkkkkkkkkkk');
     this.props.changeChangeableItem(id);
   }
-  onChangeName(item, e){
-    this.props.changeItem({...item, name:e.target.value});
-    this.props.saveData();
-  }
-  onChangePhone(item, e){
-    this.props.changeItem({...item, phone:e.target.value});
+  changePropItem(item, prop, e){
+    this.props.changeItem({...item, [prop]:e.target.value});
     this.props.saveData();
   }
   render() {
@@ -43,7 +36,7 @@ export default class ItemsBlock extends Component {
               tabIndex= "-1"
               className='item'
               key={item.id}
-              onClick={_this.onChangeChangeableItem.bind(_this, item.id)}>
+              onClick={_this.changeChangeableItem.bind(_this, item.id)}>
               <label className="item--el">{item.name}</label>
               <label className="item--el">{item.phone}</label>
               <button onClick={_this.onRemoveItem.bind(_this, item.id)}>X</button>
@@ -54,15 +47,15 @@ export default class ItemsBlock extends Component {
             autoFocus
             className='item'
             key={item.id}
-            onBlur={_this.onChangeChangeableItem.bind(_this, -1)}>
+            onBlur={_this.changeChangeableItem.bind(_this, -1)}>
               <input type='text'
                 className="item--el"
                 value={item.name}
-                onChange={_this.onChangeName.bind(_this, item)}/>
+                onChange={_this.changePropItem.bind(_this, item, 'name')}/>
               <input type='text'
                 className="item--el"
                 value={item.phone}
-                onChange={_this.onChangePhone.bind(_this, item)}/>
+                onChange={_this.changePropItem.bind(_this, item, 'phone')}/>
                 <button onClick={_this.onRemoveItem.bind(_this, item.id)}>X</button>
           </div>
         }

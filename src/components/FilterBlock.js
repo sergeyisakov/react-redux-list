@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
+import {withRouter} from "react-router-dom";
 
-export default class FilterBlock extends Component {
+export class FilterBlock extends Component {
   static propTypes = {
     changeFilter: PropTypes.func.isRequired,
     filter: PropTypes.string.isRequired
   }
   onChangeHandler(e) {
+    const val = e.target.value;
     this.props.changeFilter(e.target.value);
+    if (val){
+      this.props.history.push('?search='+val);
+    }else{
+      this.props.history.push('/');
+    }
   }
   render() {
     return <div className='filter'>
@@ -18,3 +25,5 @@ export default class FilterBlock extends Component {
     </div>
   }
 }
+
+export default withRouter(FilterBlock);
