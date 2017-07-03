@@ -2,7 +2,6 @@
   "name": "react-redux",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://mixa9269.github.io/react-redux-list",
   "devDependencies": {
     "gh-pages": "^1.0.0",
     "node-sass-chokidar": "0.0.2",
@@ -19,7 +18,8 @@
     "react-test-renderer": "^15.5.4",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "reselect": "^3.0.1"
   },
   "scripts": {
     "start-js": "react-scripts start",
@@ -30,6 +30,6 @@
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "predeploy": "npm run build",
-    "deploy": "npm run build&&gh-pages -d build"
+    "deploy": "npm build && surge -p build --domain mixa9269.surge.sh"
   }
 }

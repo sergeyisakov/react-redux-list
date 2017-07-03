@@ -53,15 +53,7 @@ export class App extends Component {
         newItem={newItem}
         saveData = {saveData}
       />
-      <ItemsBlock
-        items={ items }
-        changeableItem={changeableItem}
-        changeItem={ changeItem }
-        removeItem={ removeItem }
-        changeChangeableItem={ changeChangeableItem }
-        saveData = {saveData}
-        filter={filter}
-      />
+      <ItemsBlock/>
     </div>
   }
 }
