@@ -1,13 +1,31 @@
+import v4 from 'uuid/v4'
+
 import {
-  ADD_ITEM,
-  REMOVE_ITEM,
   CHANGE_ITEM,
   SAVE_DATA,
   LOAD_DATA,
   CHANGE_CHANGEABLE_ITEM,
   CHANGE_NEW_ITEM,
-  CHANGE_FILTER
+  CHANGE_FILTER,
+  GET_ITEMS_REQUEST,
+  PUT_ITEM_REQUEST,
+  POST_ITEM_REQUEST,
+  DELETE_ITEM_REQUEST,
 } from '../constants/ActionTypes'
+
+export function endEditingItem(item){
+  return {
+    type: PUT_ITEM_REQUEST,
+    item
+  }
+}
+
+export function getItems(filter){
+  return {
+    type: GET_ITEMS_REQUEST,
+    filter
+  }
+}
 
 export function changeFilter(value) {
   return {
@@ -16,9 +34,10 @@ export function changeFilter(value) {
   }
 }
 
-export function addItem() {
+export function addItem(item) {
   return {
-    type: ADD_ITEM
+    type: POST_ITEM_REQUEST,
+    item: {id:v4(), ...item}
   }
 }
 
@@ -32,7 +51,7 @@ export function changeNewItem(item) {
 
 export function removeItem(id) {
   return {
-    type: REMOVE_ITEM,
+    type: DELETE_ITEM_REQUEST,
     id
   }
 }
@@ -47,9 +66,7 @@ export function changeChangeableItem(id) {
 export function changeItem(item) {
   return {
     type: CHANGE_ITEM,
-    id:item.id,
-    name:item.name,
-    phone:item.phone
+    item: item
   }
 }
 

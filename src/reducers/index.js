@@ -1,26 +1,45 @@
 import {
-  ADD_ITEM,
   CHANGE_ITEM,
-  REMOVE_ITEM,
   SAVE_DATA,
   CHANGE_CHANGEABLE_ITEM,
   CHANGE_NEW_ITEM,
-  CHANGE_FILTER
+  CHANGE_FILTER,
+  GET_ITEMS_REQUEST,
+  GET_ITEMS_SUCCESS,
+  GET_ITEMS_FAIL,
+  POST_ITEM_REQUEST,
+  DELETE_ITEM_REQUEST
 } from '../constants/ActionTypes'
 
 export const initialState = {
   items:[],
-  nextId:0,
   сhangeableItem:-1,
   newItem:{
     name:'',
     phone:''
   },
-  filter:''
+  filter:'',
+  loading: false
 }
 
-export default function reducer(state = loadStateFromLocalStorage(), action) {
+export default function reducer(state = initialState, action) {
   switch (action.type) {
+    case GET_ITEMS_REQUEST:
+      return {
+        ...state,
+        loading: true
+      }
+    case GET_ITEMS_SUCCESS:
+      return {
+        ...state,
+        items: action.data,
+        loading: false
+      }
+    case GET_ITEMS_FAIL:
+      return {
+        ...state,
+        loading: 'error'
+      }
     case CHANGE_FILTER:
       return {
         ...state,
@@ -34,39 +53,27 @@ export default function reducer(state = loadStateFromLocalStorage(), action) {
           phone: action.phone
         }
       }
-    case ADD_ITEM:
-    if (state.newItem.name==='' || state.newItem.phone===''){
-        return state;
-      } else {
-        const newItem = state.newItem;
-        return {
-          ...state,
-          items:[
-            ...state.items,
-            {
-              id: state.nextId,
-              ...newItem
-            }
-          ],
-          newItem:{
-            name:'',
-            phone:''
-          },
-          nextId: state.nextId+1
+    case POST_ITEM_REQUEST:
+      const item = action.item;
+      return {
+        ...state,
+        items:[
+          ...state.items,
+          item
+        ],
+        newItem:{
+          name:'',
+          phone:''
         }
       }
     case CHANGE_ITEM:
       return {
         ...state,
         items:state.items.map(item =>
-          (item.id === action.id) ? {
-              id:action.id,
-              name:action.name,
-              phone:action.phone
-            }: item
+          (item.id === action.item.id) ? action.item: item
         )
       }
-    case REMOVE_ITEM:
+    case DELETE_ITEM_REQUEST:
       let index = state.items.findIndex((item) => item.id === action.id);
       return {
         ...state,
@@ -87,22 +94,5 @@ export default function reducer(state = loadStateFromLocalStorage(), action) {
       return state;
     default:
       return state;
-  }
-}
-
-function loadStateFromLocalStorage(){
-  var save = localStorage.getItem('save');
-  if (save==null){
-    return initialState;
-  }
-  const state = JSON.parse(save);
-  return {
-    ...state,
-    сhangeableItem:-1,
-    newItem:{
-      name:'',
-      phone:''
-    },
-    filter:''
   }
 }

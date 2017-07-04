@@ -3,14 +3,9 @@ import PropTypes from 'prop-types';
 import * as Actions from '../actions/Actions'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { getVisibleItems } from '../selectors'
 
 export class ItemsBlock extends Component {
-  static propTypes = {
-    items: PropTypes.array.isRequired,
-    changeableItem: PropTypes.number.isRequired
-  }
-  onRemoveItem(id, e) {
+  removeItem(id, e) {
     this.props.actions.removeItem(id);
   }
   changeChangeableItem(id, e){
@@ -19,17 +14,19 @@ export class ItemsBlock extends Component {
     }
     this.props.actions.changeChangeableItem(id);
   }
+  endEditingItem(item){
+    this.props.actions.endEditingItem(item);
+  }
   changePropItem(item, prop, e){
     this.props.actions.changeItem({...item, [prop]:e.target.value});
-    this.props.actions.saveData();
+  }
+  onKeyDown(item, e){
+    if (e.key === 'Enter'){
+      this.props.actions.endEditingItem(item);
+      this.props.actions.changeChangeableItem(-1);
+    }
   }
   render() {
-    const {
-      saveData,
-      removeItem,
-      changeItem,
-      changeChangeableItem
-    } = this.props.actions;
     const _this = this;
     const changeableItem = this.props.changeableItem;
     const items = this.props.items.map(function(item) {
@@ -41,7 +38,7 @@ export class ItemsBlock extends Component {
             onClick={_this.changeChangeableItem.bind(_this, item.id)}>
             <label className="item--el">{item.name}</label>
             <label className="item--el">{item.phone}</label>
-            <button onClick={_this.onRemoveItem.bind(_this, item.id)}>X</button>
+            <button onClick={_this.removeItem.bind(_this, item.id)}>X</button>
         </div>
       }else{
         return <div
@@ -49,16 +46,19 @@ export class ItemsBlock extends Component {
           autoFocus
           className='item'
           key={item.id}
-          onBlur={_this.changeChangeableItem.bind(_this, -1)}>
+          onBlur={_this.changeChangeableItem.bind(_this, -1)}
+          onKeyDown={_this.onKeyDown.bind(_this, item)}>
             <input type='text'
               className="item--el"
               value={item.name}
-              onChange={_this.changePropItem.bind(_this, item, 'name')}/>
+              onChange={_this.changePropItem.bind(_this, item, 'name')}
+              onBlur={_this.endEditingItem.bind(_this, item)}/>
             <input type='text'
               className="item--el"
               value={item.phone}
-              onChange={_this.changePropItem.bind(_this, item, 'phone')}/>
-              <button onClick={_this.onRemoveItem.bind(_this, item.id)}>X</button>
+              onChange={_this.changePropItem.bind(_this, item, 'phone')}
+              onBlur={_this.endEditingItem.bind(_this, item)}/>
+              <button onClick={_this.removeItem.bind(_this, item.id)}>X</button>
         </div>
       }
     })
@@ -80,12 +80,10 @@ function isFocusInCurrentTarget ({ relatedTarget, currentTarget }) {
 
 const mapStateToProps = (state) => {
   return {
-    items: getVisibleItems(state),
+    items: state.items,
     changeableItem: state.сhangeableItem
   }
 }
-
-const itemsSelector = state => state.items
 
 const mapDispatchToProps = (dispatch) => {
   return {

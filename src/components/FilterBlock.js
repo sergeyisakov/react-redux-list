@@ -5,11 +5,11 @@ import {withRouter} from "react-router-dom";
 export class FilterBlock extends Component {
   static propTypes = {
     changeFilter: PropTypes.func.isRequired,
+    getItems: PropTypes.func.isRequired,
     filter: PropTypes.string.isRequired
   }
   onChangeHandler(e) {
     const val = e.target.value;
-    this.props.changeFilter(e.target.value);
     if (val){
       this.props.history.push('?search='+val);
     }else{

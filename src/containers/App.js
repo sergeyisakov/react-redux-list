@@ -11,38 +11,38 @@ export class App extends Component {
     const { history } = this.props;
     this.unsubscribeFromHistory = history.listen(this.handleLocationChange);
     this.handleLocationChange(history.location);
-
   }
   componentWillUnmount() {
     if (this.unsubscribeFromHistory) this.unsubscribeFromHistory();
   }
   handleLocationChange = (location) => {
-    let search = this.props.location.search;
+    const {changeFilter, getItems} = this.props.actions;
+    let search = location.search;
     if (search && search.substring(0, 8)==='?search='){
       search=search.substring(8);
       if (search && search!==this.props.data.filter){
-        const {changeFilter} = this.props.actions;
-        changeFilter(search);
+        changeFilter(decodeURIComponent(search));
+        getItems(search);
       }
+    }else{
+      changeFilter('');
+      getItems('');
     }
   }
   render() {
-    const items = this.props.data.items;
     const newItem = this.props.data.newItem;
-    const changeableItem = this.props.data.сhangeableItem;
     const filter = this.props.data.filter;
     const {
       addItem,
       saveData,
-      removeItem,
-      changeItem,
-      changeChangeableItem,
       changeNewItem,
-      changeFilter
+      changeFilter,
+      getItems
     } = this.props.actions;
     return <div className='app'>
       <FilterBlock
         changeFilter={ changeFilter }
+        getItems={getItems}
         filter={filter}
       />
       <label className="item--el">Имя</label>
