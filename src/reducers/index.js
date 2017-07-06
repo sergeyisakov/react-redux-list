@@ -32,7 +32,7 @@ export default function reducer(state = initialState, action) {
     case GET_ITEMS_SUCCESS:
       return {
         ...state,
-        items: action.data,
+        items: action.response,
         loading: false
       }
     case GET_ITEMS_FAIL:

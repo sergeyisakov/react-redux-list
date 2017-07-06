@@ -15,14 +15,14 @@ export class ItemsBlock extends Component {
     this.props.actions.changeChangeableItem(id);
   }
   endEditingItem(item){
-    this.props.actions.endEditingItem(item);
+    this.props.actions.putItem(item);
   }
   changePropItem(item, prop, e){
     this.props.actions.changeItem({...item, [prop]:e.target.value});
   }
   onKeyDown(item, e){
     if (e.key === 'Enter'){
-      this.props.actions.endEditingItem(item);
+      this.props.actions.putItem(item);
       this.props.actions.changeChangeableItem(-1);
     }
   }
