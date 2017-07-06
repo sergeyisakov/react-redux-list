@@ -1,1 +1,1 @@
-export const URL = 'http://localhost:3000/items/'
+export const URL = 'https://protected-reaches-81956.herokuapp.com/items'
