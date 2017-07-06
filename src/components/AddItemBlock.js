@@ -8,14 +8,22 @@ export default class AddItemBlock extends Component {
     newItem: PropTypes.object.isRequired
   }
   addItem(e) {
-    this.props.addItem(this.props.newItem);
+    const item = this.props.newItem;
+    if (item.name&&item.phone){
+      this.props.addItem(item);
+    }
+  }
+  onKeyDown(e){
+    if (e.key === 'Enter'){
+      this.addItem();
+    }
   }
   newItemChange(prop, e) {
     this.props.changeNewItem({...this.props.newItem, [prop]:e.target.value});
   }
   render() {
     const newItem = this.props.newItem;
-    return <div className='addItem'>
+    return <div className='addItem' onKeyDown={this.onKeyDown.bind(this)}>
       <input onChange = {this.newItemChange.bind(this, 'name')} value={newItem.name}/>
       <input onChange = {this.newItemChange.bind(this, 'phone')} value={newItem.phone}/>
       <button onClick={this.addItem.bind(this)}>+</button>
