@@ -79,7 +79,7 @@ function isFocusInCurrentTarget ({ relatedTarget, currentTarget }) {
 
 const mapStateToProps = (state) => {
   return {
-    items: state.items,
+    items: Object.keys(state.items).map(key => { return state.items[key]}),
     changeableItem: state.сhangeableItem
   }
 }

@@ -1,3 +1,7 @@
+import { normalize } from 'normalizr'
+import * as schema from '../schema'
+import { omit } from 'lodash'
+
 import {
   CHANGE_ITEM,
   SAVE_DATA,
@@ -30,9 +34,10 @@ export default function reducer(state = initialState, action) {
         loading: true
       }
     case GET_ITEMS_SUCCESS:
+      const items = normalize(action.response, schema.arrayOfItems).entities.items;
       return {
         ...state,
-        items: action.data,
+        items: items ? items : {},
         loading: false
       }
     case GET_ITEMS_FAIL:
@@ -57,10 +62,10 @@ export default function reducer(state = initialState, action) {
       const item = action.item;
       return {
         ...state,
-        items:[
+        items:{
           ...state.items,
-          item
-        ],
+          ...normalize(action.item, schema.items).entities.items
+        },
         newItem:{
           name:'',
           phone:''
@@ -69,29 +74,21 @@ export default function reducer(state = initialState, action) {
     case CHANGE_ITEM:
       return {
         ...state,
-        items:state.items.map(item =>
-          (item.id === action.item.id) ? action.item: item
-        )
+        items:{
+          ...state.items,
+          ...normalize(action.item, schema.items).entities.items
+        }
       }
     case DELETE_ITEM_REQUEST:
-      let index = state.items.findIndex((item) => item.id === action.id);
       return {
         ...state,
-        items:[
-          ...state.items.slice(0, index),
-          ...state.items.slice(index + 1)
-        ]
+        items: omit(state.items, action.id)
       }
     case CHANGE_CHANGEABLE_ITEM:
       return {
         ...state,
         сhangeableItem:action.id
       }
-    case SAVE_DATA:
-      var date = new Date();
-      date.setDate(date.getDate() + 30);
-      localStorage.setItem('save', JSON.stringify(state));
-      return state;
     default:
       return state;
   }

@@ -11,6 +11,8 @@
   "dependencies": {
     "axios": "^0.16.2",
     "enzyme": "^2.8.2",
+    "normalizr": "^3.2.3",
+    "object.omit": "^2.0.1",
     "react": "^15.5.4",
     "react-addons-test-utils": "^15.5.1",
     "react-dom": "^15.5.4",
